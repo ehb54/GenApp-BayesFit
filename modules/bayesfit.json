@@ -1,7 +1,7 @@
 {
-    "moduleid" : "ift"
+    "moduleid" : "bayesfit"
     ,"label"    : "BayesFit"
-    ,"executable"   : "bayesfit"
+    ,"executable"   : "bayesfit.py"
     ,"submitpolicy" : "all"
 #    ,"uniquedir" : "true"
 #    ,"center" : "true"

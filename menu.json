@@ -5,7 +5,7 @@
             "id"      : "bayesfit_menu",
             "label"   : "Calculations",
             "icon"    : "pngs/simulate.png",
-	    "autorun" : "ift",
+	    "autorun" : "bayesfit",
             "startup" : "true",
             "modules" : [ 
                          { 

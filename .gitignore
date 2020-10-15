@@ -7,3 +7,4 @@ ajax
 *\#
 appconfig.json
 directives.json
+bin/bayesfit
