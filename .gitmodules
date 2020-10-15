@@ -1,0 +1,3 @@
+[submodule "bin/BayesFit"]
+	path = bin/BayesFit
+	url = https://github.com/Niels-Bohr-Institute-XNS-StructBiophys/BayesFit.git
