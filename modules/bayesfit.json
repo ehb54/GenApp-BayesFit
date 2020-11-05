@@ -16,7 +16,7 @@
             ,"type"      : "label"
             ,"colspan"   : 3
             ,"default"   : "header3"
-            ,"label"     : "BayesFit [<a target=_blank href=https://scripts.iucr.org/cgi-bin/paper?pe0063>1,</a><a target=_blank href=https://onlinelibrary.wiley.com/iucr/doi/10.1107/S0021889812014318>2,</a><a target=_blank href=http://journals.iucr.org/j/issues/2014/04/00/he5656>3,</a><a target=_blank href=https://scripts.iucr.org/cgi-bin/paper?gk0508>4,</a><a target=_blank href=https://github.com/Niels-Bohr-Institute-XNS-StructBiophys/BayesFit>Source code</a>]"
+            ,"label"     : "BayesFit [<a target=_blank href=https://journals.iucr.org/j/issues/2018/04/00/vg5086>1,</a><a target=_blank href=https://scripts.iucr.org/cgi-bin/paper?pe0063>2,</a><a target=_blank href=https://github.com/Niels-Bohr-Institute-XNS-StructBiophys/BayesFit>Source code</a>]"
             ,"prehline"  : "true"
             ,"posthline" : "true"
         }
@@ -25,149 +25,406 @@
             ,"id"         : "datafile"
             ,"label"      : "Data file"
 # need to force copy over
-#            ,"type"       : "lrfile"
+#            ,"type"      : "lrfile"
             ,"type"       : "file"
             ,"required"   : "true"
-            ,"help"       : "<p>i): Format (q, I(q), error). Data points are rebinned to a maximum of 80 points.</p><p>ii): Text lines in the data file are ignored.</p><p>iii): Maximum dynamic range for I(q) is about 1000 using the web version due to the limited resolution of p(r).</p>"
+            ,"help"       : "<p> Data file to fit. Format (q, I(q), error). Data points are rebinned to a maximum of 80 points.</p><p>Text lines in the data file are ignored.</p>"
         }
         ,{
             "role"       : "input"
             ,"id"         : "qmin"
-            ,"label"      : "Qmin [Angstrom^-1]"
+            ,"label"      : "q_min [1/A]"
             ,"type"       : "float"
             ,"step"       : 0.001
+	    ,"default"    : 0.0
             ,"help"       : "Optionally enter q min in inverse Angstroms."
         }
         ,{
             "role"       : "input"
             ,"id"         : "qmax"
-            ,"label"      : "Qmax [Angstrom^-1]"
+            ,"label"      : "q_max [1/A]"
             ,"type"       : "float"
             ,"step"       : 0.001
+	    ,"default"    : 1.0
             ,"help"       : "Qptionally Enter q max in inverse Angstroms."
         }
         ,{
             "role"       : "input"
-            ,"id"         : "fitbackground"
-            ,"label"      : "Fit background"
-            ,"type"       : "checkbox"
-            ,"help"       : "A constant (flat) background is fitted to the data."
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "dmax"
-            ,"label"      : "Maximum diameter [Angstrom]"
-            ,"type"       : "float"
-            ,"min"        : 0
-            ,"help"       : "Optionally enter starting value for the maximum diameter of the scatterer in Angstroms."
-            ,"norow"      : "true"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "dmaxfixed"
-            ,"label"      : "Fix"
-            ,"type"       : "checkbox"
-            ,"help"       : "Fix the defined maximum diameter"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "alpha"
-            ,"label"      : "Starting value for the Lagrange multiplier (Alpha)"
-            ,"type"       : "float"
-            ,"help"       : "<p>Optionally enter the starting value for the logarithm of the Lagrange multiplier (usually between -10 and 20).</p><p>Larger values will give smoother distributions or - for the MaxEnt constraint:</p><p>an estimate which is closer to the prior ellipsoid of revolution.</p>"
-            ,"norow"      : "true"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "alphafixed"
-            ,"label"      : "Fix"
-            ,"type"       : "checkbox"
-            ,"help"       : "Fix the Lagrange multiplier"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "smearing"
-            ,"label"      : "Desmearing constant"
-            ,"type"       : "float"
-            ,"help"       : "<p>Optionally enter a correction for slit smearing. Default is no smearing.</p><p>Enter value for constant c as given by the expression</p><p>I_smear(q) = integrate P(t)*I(sqrt(q**2 + t**2)) dt with the</p><p>primary beam length profile: P(t) = c/sqrt(pi) * exp(-c**2*t**2).</p><p>The fit and the deconvolution are both given in the ouput file fit.d</p>"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "prpoints"
-            ,"label"      : "Number of points in p(r)"
+            ,"id"         : "steps"
+            ,"label"      : "Number of steps in function integrals"
             ,"type"       : "integer"
             ,"min"        : 10
-            ,"default"    : 50
+            ,"default"    : 30
             ,"max"        : 100
-            ,"help"       : "<p>Optionally enter the number of points in the estimated function p(r): more points increase the cpu-time.</p><p>Default: 50, Maximum 100</p>"
+            ,"help"       : "<p>Optionally enter the number of steps used in the integrals of the model functions: more points increase accuracy but also increase cpu-time.</p><p>Default: 30, Minimum 10, Maximum 100</p>"
         }
         ,{
             "role"       : "input"
-            ,"id"         : "smallplot"
-            ,"label"      : "Small plot"
-            ,"type"       : "checkbox"
-            ,"help"       : "Check to produce small versions of the plots"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "noextracalc"
-            ,"label"      : "Number of extra error calculations"
+            ,"id"         : "maxite"
+            ,"label"      : "Maximum iterations in minimization"
             ,"type"       : "integer"
-            ,"min"        : 10
+            ,"min"        : 5
+            ,"default"    : 500
             ,"max"        : 1000
-            ,"help"       : "<p>Optionally Input number of extra error calculations (max 1000).</p><p>Entering a large number will improve the error estimate,</p><p>but require more cpu time.</p><p>In some cases it may be a little tricky to obtain a decent</p><p>error estimate. Try testing a couple of values to see the effect. </p>"
+            ,"help"       : "<p>Optionally Input the maximum number of iterations in the minimization routing: more points improve convergence, but also cpu-time. Usually the algoritm converges before this number is reached.</p><p>Default: 500, Minimum: 5 (for testing only), Maximum: 1000</p>"
         }
         ,{
             "role"       : "input"
-            ,"id"         : "transform"
-            ,"label"      : "Transformation/Regularization"
+            ,"id"         : "model"
+            ,"label"      : "Model"
             ,"type"       : "listbox"
-            ,"values"     : "Debye (default -> returning p(r) with positivity constraint)~D~Negative (Debye transformation -> returning p(r) without positivity constraint)~N~MaxEnt using an ellipsoid of revolution as prior ( -> p(r) -positivity constraint)~M~Bessel (for cylindrical scatterers -> cross section distribution)~B~Cosine (lamellae -> thickness distribution)~C~Size (using spheres only -> size distribution)~S"
-            ,"help"       : "<p>[D]ebye (default -> returning p(r) with positivity constraint)                                        sin(q*r)/(q*r) * dr</p><p>[N]egative (Debye transformation -> returning p(r) without positivity constraint)       sin(q*r)/(q*r) * dr</p><p>[M]axEnt using an ellipsoid of revolution as prior ( -> p(r) -positivity constraint)       sin(q*r)/(q*r) * dr</p><p>     The axial ratio for the ellipsoid is optimized using the posterior probability.</p><p>     The axial ratio may be initialized or fixed using the box <i>Estimate axial ratio</i></p><p>     (leave the box <i>Fit axial ratio</i> empty).</p><p>[B]essel (for cylindrical scatterers -> cross section distribution)        J_0(q*r)/q * dr</p><p>[C]osine (lamellae -> thickness distribution)                                    cos(q*r)/q**2 * dr</p><p>[S]ize (using spheres only -> size distribution)        (3*sin(q*r)-q*r*cos(q*r))/(q*r)**3)**2 * dr </p>"
-        }
-        ,{
-            "role"       : "input"
-            ,"id"         : "nondilute"
-            ,"label"      : "Non-dilute solution"
-            ,"type"       : "checkbox"
+            ,"values"     : "Core-shell (default -> core-shell particle)~coreshell~Nanodisc (Protein-lipid nanodisc)~nanodisc~Micelle (Detergent micelle)~micelle"
             ,"repeater"   : "true"
-            ,"help"       : "Check for non-dilute solutions"
+            ,"help"       : "<p>Select a model from the list. Currently, the implemented models are:<p>Core-shell particle</p><p>Protein-lipid nanodisc</p><p>Detergent micelle</p>"
+	}
+############################## MODEL parameters: coreshell ########################################################################
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_name_0",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Parameter name:",
+             "size"       : 25,
+	     "readonly"   : "true",
+ 	     "repeat"     : "model:coreshell",
+	     "norow"      : "true"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_mean_0",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Prior mean:",
+             "size"       : 11,
+             "readonly"   : "true",
+ 	     "repeat"     : "model:coreshell",
+	     "norow"      : "true",
+	     "help"       : "Mean of Gaussian prior. This is also the initial value for the fit"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_sigma_0",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Prior width:",
+             "size"       : 11,
+             "readonly"   : "true",
+ 	     "repeat"     : "model:coreshell",
+	     "norow"      : "true",
+	     "help"       : "Width (sigma) of Gaussian prior."
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_0",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Fit?:",
+             "size"       : 3,
+             "readonly"   : "true",
+ 	     "repeat"     : "model:coreshell",
+	     "norow"      : "true",
+	     "help"       : "If checked, the parameter is refined, if not checked, it is fixed at the prior value."
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_0",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Positive constraint?:",
+             "size"       : 17,
+             "readonly"   : "true",
+             "repeat"     : "model:coreshell",
+	     "help"       : "<p>If checked, a positive constraint is applied, so the parameter can not take negative values.</p><p> This is e.g. relevant for radii or forward scattering (I(0)).</p>"
         }
         ,{
-            "role"       : "input"
-            ,"id"         : "eta"
-            ,"label"      : "Estimate value for volume fraction"
-            ,"type"       : "float"
-            ,"min"        : 0
-            ,"repeat"     : "nondilute"
-            ,"help"       : "<p>The exact value entered here may influence the result when the information content of the data is low.</p><p>Start with a small number e.g. 0.01 to avoid numerical instabilities and long cpu times.</p>"
+             "role"       : "input",
+             "id"         : "coreshell_name_1",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "I(0) [1/A]",
+             "size"       : 25,
+             "readonly"   : "true",
+	     "repeat"     : "model:coreshell",
+             "norow"      : "true"
         }
         ,{
-            "role"       : "input"
-            ,"id"         : "fitratio"
-            ,"label"      : "Fit axial ratio method"
-            ,"type"       : "listbox"
-            ,"repeat"     : "nondilute"
-            ,"values"     : "No concentration effects~noconceffects~Moment~moment~No~no~Evidence~evidence"
-            ,"help"       : "Optionally enter the method" 
+             "role"       : "input",
+             "id"         : "coreshell_mean_1",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "0.808",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_sigma_1",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "0.08",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_1",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_1",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_name_2",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Background [1/A]",
+             "size"       : 25,
+             "readonly"   : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
         }
         ,{
-            "role"       : "input"
-            ,"id"         : "estimateratio"
-            ,"label"      : "Estimate the axial ratio"
-            ,"type"       : "float"
-            ,"repeat"     : "nondilute"
-            ,"help"       : "Optionally enter an estimate of the axial ratio"
-            ,"norow"      : "true"
+             "role"       : "input",
+             "id"         : "coreshell_mean_2",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "4.95e-3",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
         }
         ,{
-            "role"       : "input"
-            ,"id"         : "estimateratiofixed"
-            ,"label"      : "Fix"
-            ,"type"       : "checkbox"
-            ,"repeat"     : "nondilute"
-            ,"help"       : "Fix the estimated axial ratio"
+             "role"       : "input",
+             "id"         : "coreshell_sigma_2",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "5e-4",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
         }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_2",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_2",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "false",
+             "repeat"     : "model:coreshell"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_name_3",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Radius of core [A]",
+             "size"       : 25,
+             "readonly"   : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_mean_3",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "30.3",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_sigma_3",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "3.0",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_3",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_3",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_name_4",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Radius of shell [A]",
+             "size"       : 25,
+             "readonly"   : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_mean_4",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "49.5",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_sigma_4",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "5.0",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_4",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_4",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_name_5",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Contrast core [arb. units]",
+             "size"       : 25,
+             "readonly"   : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_mean_5",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "101.0",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_sigma_5",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "10.0",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_5",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_5",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "false",
+             "repeat"     : "model:coreshell"
+        }
+	,{
+             "role"       : "input",
+             "id"         : "coreshell_name_6",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "Contrast shell [arb. units]",
+             "size"       : 25,
+             "readonly"   : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_mean_6",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "3.96",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_sigma_6",
+             "label"      : " ",
+             "type"       : "text",
+             "default"    : "0.4",
+             "size"       : 11,
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_fit_6",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "true",
+             "repeat"     : "model:coreshell",
+             "norow"      : "true"
+        }
+        ,{
+             "role"       : "input",
+             "id"         : "coreshell_pos_6",
+             "label"      : " ",
+             "type"       : "checkbox",
+             "checked"    : "false",
+             "repeat"     : "model:coreshell"
+        }
+############################## Output ########################################################################
         ,{
             "role"       : "output"
             ,"id"         : "hroutput"
@@ -177,53 +434,39 @@
         }
         ,{
             "role"       : "output"
-            ,"id"         : "pr"
-            ,"label"      : "P(r)"
+            ,"id"         : "file_fit"
+            ,"label"      : "Fit to data, I_fit(q)"
             ,"type"       : "file"
-            ,"help"       : "The produced P(r) file"
+            ,"help"       : "The fit, columns: q, I(q)"
         }
         ,{
             "role"       : "output"
-            ,"id"         : "fitofdata"
-            ,"label"      : "Fit of data"
+            ,"id"         : "file_prior"
+            ,"label"      : "Prior intensity, I_prior(q)"
             ,"type"       : "file"
-            ,"help"       : "The fit of the data"
+            ,"help"       : "The prior intensity, colums: q, I(q)"
         }
         ,{
             "role"       : "output"
-            ,"id"         : "dataused"
-            ,"label"      : "Data used"
+            ,"id"         : "file_parameters"
+            ,"label"      : "Output parameters"
             ,"type"       : "file"
-            ,"help"       : "The data used"
-        }
-#        ,{
-#            "role"       : "output"
-#            ,"id"         : "rgi0dmax"
-#            ,"label"      : "Rg, I(0) and Dmax"
-#            ,"type"       : "file"
-#            ,"help"       : "The Rg, I(0) and Dmax in a file"
-#        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "parameters"
-            ,"label"      : "Parameters"
-            ,"type"       : "file"
-            ,"help"       : "The parameters file"
+            ,"help"       : "Output parameters, inclusive goodnes of fit etc"
         }
         ,{
             "role"       : "output"
-            ,"id"         : "zip"
+            ,"id"         : "file_zip"
             ,"label"      : "Results zipped"
             ,"type"       : "file"
             ,"help"       : "Results packaged in a zip file"
         }
-        ,{
-            "role"       : "output"
-            ,"id"         : "tgz"
-            ,"label"      : "Results tar gzipped"
-            ,"type"       : "file"
-            ,"help"       : "Results packaged as a gzipped tar file"
-        }
+#        ,{
+#            "role"       : "output"
+#            ,"id"         : "tgz"
+#            ,"label"      : "Results tar gzipped"
+#            ,"type"       : "file"
+#            ,"help"       : "Results packaged as a gzipped tar file"
+#        }
         ,{
             "role"       : "output"
             ,"id"         : "hroutput2"
@@ -233,26 +476,14 @@
         }
         ,{
             "role"       : "output"
-            ,"id"         : "Rg"
-            ,"label"      : "Rg [Angstrom]"
-            ,"type"       : "text"
-        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "axratio"
-            ,"label"      : "Axial ratio"
-            ,"type"       : "text"
-        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "minusK"
-            ,"label"      : "-K"
-            ,"type"       : "text"
-        }
-        ,{
-            "role"       : "output"
             ,"id"         : "chi2"
-            ,"label"      : "chi^2"
+            ,"label"      : "Chi^2"
+            ,"type"       : "text"
+        }
+        ,{
+            "role"       : "output"
+            ,"id"         : "chi2r"
+            ,"label"      : "Chi^2_r"
             ,"type"       : "text"
         }
         ,{
@@ -263,22 +494,22 @@
         }
         ,{
             "role"       : "output"
-            ,"id"         : "etaout"
-            ,"label"      : "Eta"
+            ,"id"         : "S"
+            ,"label"      : "value of constraint, S"
             ,"type"       : "text"
         }
         ,{
             "role"       : "output"
-            ,"id"         : "dmaxout"
-            ,"label"      : "Dmax"
+            ,"id"         : "aS"
+            ,"label"      : "value of constraint times alpha, alpha*S"
             ,"type"       : "text"
         }
-        ,{
-            "role"       : "output"
-            ,"id"         : "I0"
-            ,"label"      : "I(0) estimated"
-            ,"type"       : "text"
-        }
+#        ,{
+#            "role"       : "output"
+#            ,"id"         : "I0"
+#            ,"label"      : "I(0) estimated"
+#            ,"type"       : "text"
+#        }
         ,{
             "role"       : "output"
             ,"id"         : "Ng"
@@ -288,9 +519,10 @@
         }
         ,{
             "role"       : "output"
-            ,"id"         : "shannon"
-            ,"label"      : "Number of Shannon channels"
+            ,"id"         : "Ns"
+            ,"label"      : "Ns (Number of Shannon channels)"
             ,"type"       : "text"
+	    ,"help"       : "Number of Shannon channels"
         }
         ,{
             "role"       : "output"
@@ -298,26 +530,26 @@
             ,"label"      : "Evidence at maximum"
             ,"type"       : "text"
         }
-        ,{
-            "role"       : "output"
-            ,"id"         : "hroutput3"
-            ,"label"      : "<hr>"
-            ,"type"       : "label"
-            ,"colspan"    : 2
-        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "prfig"
-            ,"label"      : ""
-            ,"type"       : "image"
-            ,"width"      : "80%"
-        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "iqfig"
-            ,"label"      : ""
-            ,"type"       : "image"
-            ,"width"      : "80%"
-        }
+#        ,{
+#            "role"       : "output"
+#            ,"id"         : "hroutput3"
+#            ,"label"      : "<hr>"
+#            ,"type"       : "label"
+#            ,"colspan"    : 2
+#        }
+#        ,{
+ #           "role"       : "output"
+ #           ,"id"         : "prfig"
+ #           ,"label"      : ""
+ #           ,"type"       : "image"
+ #           ,"width"      : "80%"
+ #       }
+ #       ,{
+ #           "role"       : "output"
+ #           ,"id"         : "iqfig"
+ #           ,"label"      : ""
+ #           ,"type"       : "image"
+ #           ,"width"      : "80%"
+ #       }
     ]
 }
