@@ -61,10 +61,10 @@
         ,{
             "role"       : "input"
             ,"id"         : "maxite"
-            ,"label"      : "Maximum iterations in minimization"
+            ,"label"      : "Maximum iterations in minimization at each alpha step"
             ,"type"       : "integer"
             ,"min"        : 5
-            ,"default"    : 500
+            ,"default"    : 7
             ,"max"        : 1000
             ,"help"       : "<p>Optionally Input the maximum number of iterations in the minimization routing: more points improve convergence, but also cpu-time. Usually the algoritm converges before this number is reached.</p><p>Default: 500, Minimum: 5 (for testing only), Maximum: 1000</p>"
         }
@@ -78,352 +78,151 @@
             ,"help"       : "<p>Select a model from the list. Currently, the implemented models are:<p>Core-shell particle</p><p>Protein-lipid nanodisc</p><p>Detergent micelle</p>"
 	}
 ############################## MODEL parameters: coreshell ########################################################################
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_name_0",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Parameter name:",
-             "size"       : 25,
-	     "readonly"   : "true",
- 	     "repeat"     : "model:coreshell",
-	     "norow"      : "true"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_0",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Prior mean:",
-             "size"       : 11,
-             "readonly"   : "true",
- 	     "repeat"     : "model:coreshell",
-	     "norow"      : "true",
-	     "help"       : "Mean of Gaussian prior. This is also the initial value for the fit"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_0",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Prior width:",
-             "size"       : 11,
-             "readonly"   : "true",
- 	     "repeat"     : "model:coreshell",
-	     "norow"      : "true",
-	     "help"       : "Width (sigma) of Gaussian prior."
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_0",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Fit?:",
-             "size"       : 3,
-             "readonly"   : "true",
- 	     "repeat"     : "model:coreshell",
-	     "norow"      : "true",
-	     "help"       : "If checked, the parameter is refined, if not checked, it is fixed at the prior value."
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_0",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Positive constraint?:",
-             "size"       : 17,
-             "readonly"   : "true",
-             "repeat"     : "model:coreshell",
-	     "help"       : "<p>If checked, a positive constraint is applied, so the parameter can not take negative values.</p><p> This is e.g. relevant for radii or forward scattering (I(0)).</p>"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_name_1",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "I(0) [1/A]",
-             "size"       : 25,
-             "readonly"   : "true",
-	     "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_1",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "0.808",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_1",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "0.08",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_1",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_1",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_name_2",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Background [1/A]",
-             "size"       : 25,
-             "readonly"   : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_2",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "4.95e-3",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_2",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "5e-4",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_2",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_2",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "false",
-             "repeat"     : "model:coreshell"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_name_3",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Radius of core [A]",
-             "size"       : 25,
-             "readonly"   : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_3",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "30.3",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_3",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "3.0",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_3",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_3",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_name_4",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Radius of shell [A]",
-             "size"       : 25,
-             "readonly"   : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_4",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "49.5",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_4",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "5.0",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_4",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_4",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_name_5",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Contrast core [arb. units]",
-             "size"       : 25,
-             "readonly"   : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_5",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "101.0",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_5",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "10.0",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_5",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_5",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "false",
-             "repeat"     : "model:coreshell"
-        }
-	,{
-             "role"       : "input",
-             "id"         : "coreshell_name_6",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "Contrast shell [arb. units]",
-             "size"       : 25,
-             "readonly"   : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_mean_6",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "3.96",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_sigma_6",
-             "label"      : " ",
-             "type"       : "text",
-             "default"    : "0.4",
-             "size"       : 11,
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_fit_6",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "true",
-             "repeat"     : "model:coreshell",
-             "norow"      : "true"
-        }
-        ,{
-             "role"       : "input",
-             "id"         : "coreshell_pos_6",
-             "label"      : " ",
-             "type"       : "checkbox",
-             "checked"    : "false",
-             "repeat"     : "model:coreshell"
-        }
+        ,{"role": "input","id": "coreshell_name_0", "label": " ","type": "text",    "default": "Parameter name:","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+	,{"role": "input","id": "coreshell_mean_0", "label": " ","type": "text",    "default": "Prior mean:","size": 11,"readonly": "true","repeat": "model:coreshell","norow": "true","help": "Mean of Gaussian prior, also the initial value for the fit"}
+	,{"role": "input","id": "coreshell_sigma_0","label": " ","type": "text",    "default": "Prior width:","size": 11,"readonly": "true","repeat": "model:coreshell","norow": "true","help": "Width (sigma) of Gaussian prior."}
+	,{"role": "input","id": "coreshell_fit_0",  "label": " ","type": "text",    "default": "Fit?:","size": 3, "readonly": "true","repeat": "model:coreshell","norow": "true","help": "If not checked, parameter is fixed at the prior value."}
+	,{"role": "input","id": "coreshell_pos_0",  "label": " ","type": "text",    "default": "Positive constraint?:","size": 17,"readonly": "true","repeat": "model:coreshell","help" : "<p>Apply positive constraint on the parameter, e.g on radii or I(0).</p>"}
+##parameters
+        ,{"role": "input","id": "coreshell_name_1", "label": " ","type": "text",    "default": "I(0) [1/A]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+     	,{"role": "input","id": "coreshell_mean_1", "label": " ","type": "text",    "default": "0.88",                 "size": 11,"repeat": "model:coreshell","norow": "true"}
+	,{"role": "input","id": "coreshell_sigma_1","label": " ", "type": "text",   "default": "0.8","size": 11,"repeat": "model:coreshell","norow": "true"}
+	,{"role": "input","id": "coreshell_fit_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
+	,{"role": "input","id": "coreshell_pos_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell"}
+	,{"role": "input","id": "coreshell_name_2", "label": " ","type": "text",    "default": "Background [1/A]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_mean_2", "label": " ","type": "text",    "default": "4.5e-3","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_sigma_2","label": " ","type": "text",    "default": "1e-1","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_fit_2",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_pos_2",  "label": " ","type": "checkbox","checked": "false","repeat": "model:coreshell"}
+	,{"role": "input","id": "coreshell_name_3", "label": " ","type": "text",    "default": "Radius of core [A]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_mean_3", "label": " ","type": "text",    "default": "33.0","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_sigma_3","label": " ","type": "text",    "default": "6.0","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_fit_3",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_pos_3",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell"}
+	,{"role": "input","id": "coreshell_name_4", "label": " ","type": "text",    "default": "Radius of shell [A]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_mean_4", "label": " ","type": "text",    "default": "45","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_sigma_4","label": " ","type": "text",    "default": "10","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_fit_4",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_pos_4",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell"}
+	,{"role": "input","id": "coreshell_name_5", "label": " ","type": "text",    "default": "Contrast core [arb. units]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_mean_5", "label": " ","type": "text",    "default": "110.0","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_sigma_5","label": " ","type": "text",    "default": "20.0","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_fit_5",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_pos_5",  "label": " ","type": "checkbox","checked": "false","repeat": "model:coreshell"}
+	,{"role": "input","id": "coreshell_name_6", "label": " ","type": "text",    "default": "Contrast shell [arb. units]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_mean_6", "label": " ","type": "text",    "default": "3.6","size": 11,"repeat": "model:coreshell","norow"      : "true"}
+        ,{"role": "input","id": "coreshell_sigma_6","label": " ","type": "text",    "default": "0.8","size": 11,"repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_fit_6",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
+        ,{"role": "input","id": "coreshell_pos_6",  "label": " ","type": "checkbox","checked": "false","repeat": "model:coreshell"}
+############################## MODEL parameters: nanodisc ########################################################################
+        ,{"role": "input","id": "nanodisc_name_0", "label": " ","type": "text",    "default": "Parameter name:","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_0", "label": " ","type": "text",    "default": "Prior mean:","size": 11,"readonly": "true","repeat": "model:nanodisc","norow": "true","help": "Mean of Gaussian prior, also the initial value for the fit"}
+        ,{"role": "input","id": "nanodisc_sigma_0","label": " ","type": "text",    "default": "Prior width:","size": 11,"readonly": "true","repeat": "model:nanodisc","norow": "true","help": "Width (sigma) of Gaussian prior."}
+        ,{"role": "input","id": "nanodisc_fit_0",  "label": " ","type": "text",    "default": "Fit?:","size": 3, "readonly": "true","repeat": "model:nanodisc","norow": "true","help": "If not checked, parameter is fixed at the prior value."}
+        ,{"role": "input","id": "nanodisc_pos_0",  "label": " ","type": "text",    "default": "Positive constraint?:","size": 17,"readonly": "true","repeat": "model:nanodisc","help" : "<p>Apply positive constraint on the parameter, e.g on radii or I(0).</p>"}
+##parameters
+        ,{"role": "input","id": "nanodisc_name_1", "label": " ","type": "text",    "default": "Background [1/A]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_1", "label": " ","type": "text",    "default": "0.0001",                 "size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_1","label": " ", "type": "text",   "default": "0.001","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_1",  "label": " ","type": "checkbox","checked": "false","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_2", "label": " ","type": "text",    "default": "Concentration [uM]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_2", "label": " ","type": "text",    "default": "22.6","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_2","label": " ","type": "text",    "default": "3.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_2",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_2",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_3", "label": " ","type": "text",    "default": "Volume, lipid [A^3]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_3", "label": " ","type": "text",    "default": "985","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_3","label": " ","type": "text",    "default": "30","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_3",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_3",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_4", "label": " ","type": "text",    "default": "Volume, lipid tail [A^3]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_4", "label": " ","type": "text",    "default": "666","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_4","label": " ","type": "text",    "default": "20","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_4",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_4",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_5", "label": " ","type": "text",    "default": "Correction of volume, protein","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_5", "label": " ","type": "text",    "default": "1.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_5","label": " ","type": "text",    "default": "0.04","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_5",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_5",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_6", "label": " ","type": "text",    "default": "Number of lipids per nanodisc","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_6", "label": " ","type": "text",    "default": "152.0","size": 11,"repeat": "model:nanodisc","norow"      : "true"}
+        ,{"role": "input","id": "nanodisc_sigma_6","label": " ","type": "text",    "default": "10.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_6",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_6",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_7", "label": " ","type": "text",    "default": "Thickness protein belt [A]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_7", "label": " ","type": "text",    "default": "10.0",                 "size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_7","label": " ", "type": "text",   "default": "0.3","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_7",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_7",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_8", "label": " ","type": "text",    "default": "Roughness [1/A^2]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_8", "label": " ","type": "text",    "default": "6.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_8","label": " ","type": "text",    "default": "1.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_8",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_8",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_9", "label": " ","type": "text",    "default": "Areas per lipd [A^3]","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_9", "label": " ","type": "text",    "default": "61.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_9","label": " ","type": "text",    "default": "5.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_9",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_9",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_10", "label": " ","type": "text",    "default": "Ellipticity (of lipid)","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_10", "label": " ","type": "text",    "default": "1.4","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_10","label": " ","type": "text",    "default": "0.15","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_10",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_10",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_11", "label": " ","type": "text",    "default": "Number of waters per lipid","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_11", "label": " ","type": "text",    "default": "8.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_sigma_11","label": " ","type": "text",    "default": "2.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_11",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_11",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+        ,{"role": "input","id": "nanodisc_name_12", "label": " ","type": "text",    "default": "Radius of gyration","size": 25,"readonly": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_mean_12", "label": " ","type": "text",    "default": "12.5","size": 11,"repeat": "model:nanodisc","norow"      : "true"}
+        ,{"role": "input","id": "nanodisc_sigma_12","label": " ","type": "text",    "default": "1.0","size": 11,"repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_fit_12",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc","norow": "true"}
+        ,{"role": "input","id": "nanodisc_pos_12",  "label": " ","type": "checkbox","checked": "true","repeat": "model:nanodisc"}
+############################## MODEL parameters: micelle ########################################################################
+        ,{"role": "input","id": "micelle_name_0", "label": " ","type": "text",    "default": "Parameter name:","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_0", "label": " ","type": "text",    "default": "Prior mean:","size": 11,"readonly": "true","repeat": "model:micelle","norow": "true","help": "Mean of Gaussian prior, also the initial value for the fit"}
+        ,{"role": "input","id": "micelle_sigma_0","label": " ","type": "text",    "default": "Prior width:","size": 11,"readonly": "true","repeat": "model:micelle","norow": "true","help": "Width (sigma) of Gaussian prior."}
+        ,{"role": "input","id": "micelle_fit_0",  "label": " ","type": "text",    "default": "Fit?:","size": 3, "readonly": "true","repeat": "model:micelle","norow": "true","help": "If not checked, parameter is fixed at the prior value."}
+        ,{"role": "input","id": "micelle_pos_0",  "label": " ","type": "text",    "default": "Positive constraint?:","size": 17,"readonly": "true","repeat": "model:micelle","help" : "<p>Apply positive constraint on the parameter, e.g on radii or I(0).</p>"}
+##parameters
+        ,{"role": "input","id": "micelle_name_1", "label": " ","type": "text",    "default": "Concentration [mM]","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_1", "label": " ","type": "text",    "default": "30.0","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_sigma_1","label": " ","type": "text",    "default": "0.4","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle"}
+        ,{"role": "input","id": "micelle_name_2", "label": " ","type": "text",    "default": "Background [1/cm]","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_2", "label": " ","type": "text",    "default": "0.003","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_sigma_2","label": " ","type": "text",    "default": "0.01","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_2",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_2",  "label": " ","type": "checkbox","checked": "false","repeat": "model:micelle"}
+        ,{"role": "input","id": "micelle_name_3", "label": " ","type": "text",    "default": "Aggregation number","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_3", "label": " ","type": "text",    "default": "130","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_sigma_3","label": " ","type": "text",    "default": "0.15","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_3",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_3",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle"}
+        ,{"role": "input","id": "micelle_name_4", "label": " ","type": "text",    "default": "Contrast shell [e/A^3]","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_4", "label": " ","type": "text",    "default": "0.184","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_sigma_4","label": " ","type": "text",    "default": "0.0013","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_4",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_4",  "label": " ","type": "checkbox","checked": "false","repeat": "model:micelle"}
+        ,{"role": "input","id": "micelle_name_5", "label": " ","type": "text",    "default": "Contrast core [e/A^3]","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_5", "label": " ","type": "text",    "default": "-0.056","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_sigma_5","label": " ","type": "text",    "default": "0.006","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_5",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_5",  "label": " ","type": "checkbox","checked": "false","repeat": "model:micelle"}
+        ,{"role": "input","id": "micelle_name_6", "label": " ","type": "text",    "default": "Roughness, sigma [A]","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_6", "label": " ","type": "text",    "default": "6.0","size": 11,"repeat": "model:micelle","norow"      : "true"}
+        ,{"role": "input","id": "micelle_sigma_6","label": " ","type": "text",    "default": "1.0","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_6",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_6",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle"}
+        ,{"role": "input","id": "micelle_name_7", "label": " ","type": "text",    "default": "Ellipticity, epsilon","size": 25,"readonly": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_mean_7", "label": " ","type": "text",    "default": "1.0",                 "size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_sigma_7","label": " ", "type": "text",   "default": "0.30","size": 11,"repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_fit_7",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle","norow": "true"}
+        ,{"role": "input","id": "micelle_pos_7",  "label": " ","type": "checkbox","checked": "true","repeat": "model:micelle"}	
 ############################## Output ########################################################################
         ,{
             "role"       : "output"
@@ -431,6 +230,13 @@
             ,"label"      : "<hr>"
             ,"type"       : "label"
             ,"colspan"    : 2
+        }
+	,{
+            "role"       : "output"
+            ,"id"         : "file_data"
+            ,"label"      : "Data used for fit, I_dat(q)"
+            ,"type"       : "file"
+            ,"help"       : "The input data, columns: q, I(q), sigma(q)"
         }
         ,{
             "role"       : "output"
@@ -453,6 +259,20 @@
             ,"type"       : "file"
             ,"help"       : "Output parameters, inclusive goodnes of fit etc"
         }
+	,{
+            "role"       : "output"
+            ,"id"         : "file_stdout"
+            ,"label"      : "Terminal output"
+            ,"type"       : "file"
+            ,"help"       : "stdout from BayesFit"
+        }
+        ,{
+            "role"       : "output"
+            ,"id"         : "file_plot"
+            ,"label"      : "Plot of data, prior and fit"
+            ,"type"       : "file"
+            ,"help"       : "Plot (python) of data, prior and fit"
+        }
         ,{
             "role"       : "output"
             ,"id"         : "file_zip"
@@ -460,13 +280,6 @@
             ,"type"       : "file"
             ,"help"       : "Results packaged in a zip file"
         }
-#        ,{
-#            "role"       : "output"
-#            ,"id"         : "tgz"
-#            ,"label"      : "Results tar gzipped"
-#            ,"type"       : "file"
-#            ,"help"       : "Results packaged as a gzipped tar file"
-#        }
         ,{
             "role"       : "output"
             ,"id"         : "hroutput2"
@@ -488,8 +301,8 @@
         }
         ,{
             "role"       : "output"
-            ,"id"         : "logalpha"
-            ,"label"      : "log(alpha)"
+            ,"id"         : "alpha"
+            ,"label"      : "alpha"
             ,"type"       : "text"
         }
         ,{
@@ -504,52 +317,40 @@
             ,"label"      : "value of constraint times alpha, alpha*S"
             ,"type"       : "text"
         }
-#        ,{
-#            "role"       : "output"
-#            ,"id"         : "I0"
-#            ,"label"      : "I(0) estimated"
-#            ,"type"       : "text"
-#        }
         ,{
             "role"       : "output"
             ,"id"         : "Ng"
             ,"label"      : "Ng (Number of good parameters)"
             ,"type"       : "text"
-#            ,"help"       : "Number of good parameters"
+            ,"help"       : "Number of good parameters"
         }
-        ,{
-            "role"       : "output"
-            ,"id"         : "Ns"
-            ,"label"      : "Ns (Number of Shannon channels)"
-            ,"type"       : "text"
-	    ,"help"       : "Number of Shannon channels"
-        }
+#        ,{
+#            "role"       : "output"
+#            ,"id"         : "Ns"
+#            ,"label"      : "Ns (Number of Shannon channels)"
+#            ,"type"       : "text"
+#	    ,"help"       : "Number of Shannon channels"
+#        }
         ,{
             "role"       : "output"
             ,"id"         : "evidence"
             ,"label"      : "Evidence at maximum"
             ,"type"       : "text"
         }
-#        ,{
-#            "role"       : "output"
-#            ,"id"         : "hroutput3"
-#            ,"label"      : "<hr>"
-#            ,"type"       : "label"
-#            ,"colspan"    : 2
-#        }
-#        ,{
- #           "role"       : "output"
- #           ,"id"         : "prfig"
- #           ,"label"      : ""
- #           ,"type"       : "image"
- #           ,"width"      : "80%"
- #       }
- #       ,{
- #           "role"       : "output"
- #           ,"id"         : "iqfig"
- #           ,"label"      : ""
- #           ,"type"       : "image"
- #           ,"width"      : "80%"
- #       }
+#	,{
+#	    "role"       : "input"
+#	    ,"id"        : "module_header"
+#	    ,"label"     : "Plot Exercise"
+#	    ,"type"      : "label"
+#	    ,"default"   : "header4"
+#	    ,"prehline"  : "true"
+#	    ,"posthline" : "true"
+#	}
+	,{
+	    "role"       : "output"
+	    ,"id"        : "plotline"
+	    ,"type"      : "plotly"
+	    ,"label"     : "Fit"
+	}
     ]
 }

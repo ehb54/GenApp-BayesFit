@@ -5,14 +5,20 @@ import io
 import sys
 import os
 import socket # for sending progress messages to textarea
- 
+from genapp3 import genapp
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import gridspec
+import subprocess
+
 if __name__=='__main__':
 
     argv_io_string = io.StringIO(sys.argv[1])
     json_variables = json.load(argv_io_string)
 
     # read model non-specific Json input
-    data = "Isim.dat"
+    data_file_path = json_variables['datafile'][0] # name of datafile
+    data = data_file_path.split('/')[-1] 
     q_min = float(json_variables['qmin'])
     q_max = float(json_variables['qmax'])
     steps = int(json_variables['steps']) # Number of steps in function integrals
@@ -29,73 +35,63 @@ if __name__=='__main__':
     f.write('%d %d\n' % (steps,maxite))
     f.write('%f %f\n' % (q_min,q_max))
 
-    # read model specific Json intput
+    # read model-specific Json intput
     if model == "coreshell":
-        # make for loop
-        for i in range(6):
-            #tmp = '%s_name_%d' % (model,i+1)
-            #par_name(i) = json_variables[tmp]
-            tmp = '%s_mean_%d' % (model,i+1)
-            mean = float(json_variables[tmp])
-            tmp = '%s_sigma_%d' % (model,i+1)
-            sigma = float(json_variables[tmp])
+        N_params = 6
+    elif model == "nanodisc":
+        N_params = 12
+    elif model == "micelle":
+        N_params = 7
+
+    # make for loop
+    for i in range(N_params):
+        tmp = '%s_mean_%d' % (model,i+1)
+        mean = float(json_variables[tmp])
+        tmp = '%s_sigma_%d' % (model,i+1)
+        sigma = float(json_variables[tmp])
             
-            # fit, fit with positive constraint or fix?
-            FIT = 0 
-            tmp = '%s_fit_%d' % (model,i+1)
+        # fit, fit with positive constraint or fix?
+        FIT = 0 
+        tmp = '%s_fit_%d' % (model,i+1)
+        try:
+            fit = json_variables[tmp]
+            FIT +=1
             try:
-                fit = json_variables[tmp]
+                tmp = '%s_pos_%d' % (model,i+1)
+                pos = json_variables[tmp]
                 FIT +=1
-                try:
-                    tmp = '%s_pos_%d' % (model,i+1)
-                    pos = json_variables[tmp]
-                    FIT +=1
-                except:
-                    pass
             except:
                 pass
+        except:
+            pass
             
-            # write model non-specific Json input to inputfile
-            f.write('%f %f %d\n' % (mean,sigma,FIT))
+        # write model non-specific Json input to inputfile
+        f.write('%f %f %d\n' % (mean,sigma,FIT))
         
     ## close input file 
     f.close()
 
     ## messaging
-    UDP_IP = json_variables['_udphost']
-    UDP_PORT = json_variables['_udpport']
-    sock = socket.socket(socket.AF_INET, # Internet
-        socket.SOCK_DGRAM) # UDP
-
-    socket_dict={}
-    socket_dict['_uuid'] = json_variables['_uuid']
-
-    socket_dict["_textarea"] = 'Starting Calculations...'
-    #socket_dict["progress_output"] =  str(0.0)
-    #socket_dict["progress_text"] =  'Fitting Progress: 0%'
-    #if socket_dict:
-    doc_string = json.dumps(socket_dict)
-    sock.sendto(doc_string,(UDP_IP,UDP_PORT))
-
+    d = genapp(json_variables)
 
     ## run bayesfit
-    output = {}
-    output['_textarea'] = "running bayesfit...\n"
-    print( json.dumps(output) )
-    os.system('/opt/genapp/bayesfit/bin/BayesFit/bayesfit input.d')
-    
-    ## send output
-    #socket_dict={}
-    #socket_dict['_uuid'] = json_variables['_uuid']
-    #value = '...'
-    #svalue = str(100*value)
-    #socket_dict['_progress'] = value
-    #socket_dict['progress_output'] = value
-    #socket_dict['progress_html'] = '<center>'+svalue+'</center>'
-    #doc_string = json.dumps(socket_dict)
+    d.udpmessage({"_textarea":"run bayesapp\n"})
 
-    #sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM) # INTERNET and UDP
-    #sock.sendto(doc_string,(UDP_IP,UDP_PORT))
+    def execute(command,f):
+        popen = subprocess.Popen(command, stdout=subprocess.PIPE,bufsize=1)
+        lines_iterator = iter(popen.stdout.readline, b"")
+        while popen.poll() is None:
+            for line in lines_iterator:
+                nline = line.rstrip()
+                nline_latin = nline.decode('latin')
+                out_line = '%s\n' % nline_latin
+                #print(nline.decode("latin"), end = "\r\n",flush =True) # yield line
+                d.udpmessage({"_textarea": out_line})
+                f.write(out_line)
+    
+    f = open('stdout.d','w')
+    execute(['/opt/genapp/bayesfit/bin/BayesFit/bayesfit','input.d'],f)
+    f.close()
 
     ## retrive output from parameter file
     f = open('parameters.d','r')
@@ -122,29 +118,82 @@ if __name__=='__main__':
         line = f.readline()
     f.close()
 
-    Ns = 'to be implemented'
+    ## generate plots
+    q,Idat,sigma = np.genfromtxt('data.d',skip_header=0,usecols=[0,1,2],unpack=True)
+    q,Ifit = np.genfromtxt('fit.d',skip_header=1,usecols=[0,1],unpack=True)
+    q,Iprior = np.genfromtxt('prior.d',skip_header=0,usecols=[0,1],unpack=True)
+    R = (Ifit-Idat)/sigma
+    maxR = np.ceil(np.amax(abs(R)))
+    
+    #p1 = plt.subplot(211)
+    #p2 = plt.subplot(212)
+    gs = gridspec.GridSpec(2, 1, height_ratios=[4, 1]) 
+    p1 = plt.subplot(gs[0])
+    p2 = plt.subplot(gs[1])
+    #f,(p1,p2) = plt.subplot(2,1,gridspec_kw={'height_ratios': [4,1]})
+
+    p1.errorbar(q,Idat,yerr=sigma,linestyle='none',marker='.',color='red',label='data',zorder=0)
+    p1.plot(q,Iprior,linestyle='--',color='grey',label='prior',zorder=1)
+    p1.plot(q,Ifit,color='black',label='fit')
+    
+    p2.plot(q,q*0,linestyle='none',marker='.',color='red')
+    p2.plot(q,R,color='black')
+
+    p1.set_xscale('log')
+    p1.set_yscale('log')
+    p1.set_ylabel(r'$I(q)$ [cm$^{-1}$]')
+    p1.set_xticklabels([])
+    p1.legend()
+    
+    p2.set_xscale('log')
+    p2.set_ylim([-maxR,maxR])
+    p2.set_yticks([-maxR,0,maxR])
+    p2.set_xlabel(r'$q$ [$\AA^{-1}$]')
+    p2.set_ylabel(r'$\Delta I/\sigma$')
+    plt.savefig('plot.png')
 
     ## generating output
-    #output = {} # create an empty python dictionary
+    output = {} # create an empty python dictionary
+    output["file_data"] = "%s/data.d" % folder
     output["file_fit"] = "%s/fit.d" % folder
     output["file_prior"] = "%s/prior.d" % folder
     output["file_parameters"] = "%s/parameters.d" % folder
-    os.system('zip results.zip fit.d prior.d parameters.d')
+    output["file_stdout"] = "%s/stdout.d" % folder
+    output["file_plot"] = "%s/plot.png" % folder
+    os.system('zip results.zip data.d fit.d prior.d parameters.d stdout.d plot.png')
     output["file_zip"] = "%s/results.zip" % folder
     output["chi2"] = "%s" % chi2
     output["chi2r"] = "%s" % chi2r
-    output["logalpha"] = "%s" % alpha 
+    output["alpha"] = "%s" % alpha 
     output["S"] = "%s" % S
     output["aS"] = "%s" % aS
     #output["I0"] = "%s" % I0
     output["Ng"] = "%s" % Ng
-    output["Ns"] = "%s" % Ns
+    #output["Ns"] = "%s" % Ns
     output["evidence"] = "%s" % evidence
 
     #output['_textarea'] = "JSON output from executable:\n" + json.dumps( output, indent=4 ) + "\n\n";
     #output['_textarea'] += "JSON input to executable:\n" + json.dumps( json_variables, indent=4 ) + "\n";
+    
+    #output["_textarea"] = "bayesfit terminated succesfully!\n"
+    #output["_textarea"] += "files ready to download\n"
 
-    output["_textarea"] += "bayesfit finished succesfully!"
+    ##plot
+    output['plotline'] = {
+            "data" : [
+                {"x": q.tolist(),"y": Idat.tolist(),"error_y": {"type": "data","array":sigma.tolist(),"visible":"true"},"type": "scatter","mode": "markers","marker": {"color": "rgb(250,  0,  0)","size":12},"name": "data"},
+                {"x": q.tolist(),"y": Iprior.tolist(),"mode": "lines",  "line":   {"color": "rgb(170,170,170)","width":3},"name": "prior"},
+                {"x": q.tolist(),"y": Ifit.tolist()  ,"mode": "lines",  "line":   {"color": "rgb(  0,  0,  0)","width":3},"name": "fit"}
+            ]
+            #,"layout": {"title": "data, prior and fit"}
+            ,"layout": {"title": "data, prior and fit","xaxis": {"title":{"text": "q [1/A]"},"type": "log"},"yaxis": {"title":{"text": "I(q) [1/cm]"},"type": "log"}}
+            #,"labels": {"x": "q"}
+            #,"xaxis": {"title": "q"}
+            #,"yaxis": {"title": "q"}}
+            #,"log_x": "True"
+        }
 
+    ## send output
     print( json.dumps(output) ) # convert dictionary to json and output
+
 
