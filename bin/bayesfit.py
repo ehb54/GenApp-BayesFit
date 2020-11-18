@@ -150,7 +150,8 @@ if __name__=='__main__':
     p2.set_yticks([-maxR,0,maxR])
     p2.set_xlabel(r'$q$ [$\AA^{-1}$]')
     p2.set_ylabel(r'$\Delta I/\sigma$')
-    plt.savefig('plot.png')
+    p1.set_title('data, prior and fit')
+    plt.savefig('plot.png',dpi=200)
 
     ## generating output
     output = {} # create an empty python dictionary
@@ -166,32 +167,23 @@ if __name__=='__main__':
     output["chi2r"] = "%s" % chi2r
     output["alpha"] = "%s" % alpha 
     output["S"] = "%s" % S
-    output["aS"] = "%s" % aS
-    #output["I0"] = "%s" % I0
+    #output["aS"] = "%s" % aS
     output["Ng"] = "%s" % Ng
-    #output["Ns"] = "%s" % Ns
     output["evidence"] = "%s" % evidence
-
+    output["plotfit"] = "%s/plot.png" % folder
+    
     #output['_textarea'] = "JSON output from executable:\n" + json.dumps( output, indent=4 ) + "\n\n";
     #output['_textarea'] += "JSON input to executable:\n" + json.dumps( json_variables, indent=4 ) + "\n";
     
-    #output["_textarea"] = "bayesfit terminated succesfully!\n"
-    #output["_textarea"] += "files ready to download\n"
-
-    ##plot
-    output['plotline'] = {
-            "data" : [
-                {"x": q.tolist(),"y": Idat.tolist(),"error_y": {"type": "data","array":sigma.tolist(),"visible":"true"},"type": "scatter","mode": "markers","marker": {"color": "rgb(250,  0,  0)","size":12},"name": "data"},
-                {"x": q.tolist(),"y": Iprior.tolist(),"mode": "lines",  "line":   {"color": "rgb(170,170,170)","width":3},"name": "prior"},
-                {"x": q.tolist(),"y": Ifit.tolist()  ,"mode": "lines",  "line":   {"color": "rgb(  0,  0,  0)","width":3},"name": "fit"}
-            ]
-            #,"layout": {"title": "data, prior and fit"}
-            ,"layout": {"title": "data, prior and fit","xaxis": {"title":{"text": "q [1/A]"},"type": "log"},"yaxis": {"title":{"text": "I(q) [1/cm]"},"type": "log"}}
-            #,"labels": {"x": "q"}
-            #,"xaxis": {"title": "q"}
-            #,"yaxis": {"title": "q"}}
-            #,"log_x": "True"
-        }
+#    ##plot
+#    output['plotline'] = {
+#            "data" : [
+#                {"x": q.tolist(),"y": Idat.tolist(),"error_y": {"type": "data","array":sigma.tolist(),"visible":"true"},"type": "scatter","mode": "markers","marker": {"color": "rgb(250,  0,  0)","size":12},"name": "data"},
+#                {"x": q.tolist(),"y": Iprior.tolist(),"mode": "lines",  "line":   {"color": "rgb(170,170,170)","width":3},"name": "prior"},
+#                {"x": q.tolist(),"y": Ifit.tolist()  ,"mode": "lines",  "line":   {"color": "rgb(  0,  0,  0)","width":3},"name": "fit"}
+#            ]
+#            ,"layout": {"title": "data, prior and fit","xaxis": {"title":{"text": "q [1/A]"},"type": "log"},"yaxis": {"title":{"text": "I(q) [1/cm]"},"type": "log"}}
+#        }
 
     ## send output
     print( json.dumps(output) ) # convert dictionary to json and output
