@@ -125,13 +125,11 @@ if __name__=='__main__':
     R = (Ifit-Idat)/sigma
     maxR = np.ceil(np.amax(abs(R)))
     
-    #p1 = plt.subplot(211)
-    #p2 = plt.subplot(212)
     gs = gridspec.GridSpec(2, 1, height_ratios=[4, 1]) 
     p1 = plt.subplot(gs[0])
     p2 = plt.subplot(gs[1])
-    #f,(p1,p2) = plt.subplot(2,1,gridspec_kw={'height_ratios': [4,1]})
-
+    
+    ## log-log
     p1.errorbar(q,Idat,yerr=sigma,linestyle='none',marker='.',color='red',label='data',zorder=0)
     p1.plot(q,Iprior,linestyle='--',color='grey',label='prior',zorder=1)
     p1.plot(q,Ifit,color='black',label='fit')
@@ -150,8 +148,19 @@ if __name__=='__main__':
     p2.set_yticks([-maxR,0,maxR])
     p2.set_xlabel(r'$q$ [$\AA^{-1}$]')
     p2.set_ylabel(r'$\Delta I/\sigma$')
-    p1.set_title('data, prior and fit')
-    plt.savefig('plot.png',dpi=200)
+    p1.set_title('data, prior and fit (log-log scale)')
+    
+    plt.savefig('plot_loglog.png',dpi=200)
+
+    ## lin -log
+    p1.set_xscale('linear')
+    p2.set_xscale('linear')
+    p1.set_title('data, prior and fit (lin-log scale)')
+    plt.savefig('plot_linlog.png',dpi=200)
+    plt.close()
+   
+    ## compress output files to zip file
+    os.system('zip results.zip data.d fit.d prior.d parameters.d stdout.d *.png')
 
     ## generating output
     output = {} # create an empty python dictionary
@@ -160,8 +169,7 @@ if __name__=='__main__':
     output["file_prior"] = "%s/prior.d" % folder
     output["file_parameters"] = "%s/parameters.d" % folder
     output["file_stdout"] = "%s/stdout.d" % folder
-    output["file_plot"] = "%s/plot.png" % folder
-    os.system('zip results.zip data.d fit.d prior.d parameters.d stdout.d plot.png')
+    output["file_plot"] = "%s/plot_loglog.png" % folder
     output["file_zip"] = "%s/results.zip" % folder
     output["chi2"] = "%s" % chi2
     output["chi2r"] = "%s" % chi2r
@@ -170,8 +178,9 @@ if __name__=='__main__':
     #output["aS"] = "%s" % aS
     output["Ng"] = "%s" % Ng
     output["evidence"] = "%s" % evidence
-    output["plotfit"] = "%s/plot.png" % folder
-    
+    output["plotfit"] = "%s/plot_loglog.png" % folder
+    output["plotfit_linlog"] = "%s/plot_linlog.png" % folder
+
     #output['_textarea'] = "JSON output from executable:\n" + json.dumps( output, indent=4 ) + "\n\n";
     #output['_textarea'] += "JSON input to executable:\n" + json.dumps( json_variables, indent=4 ) + "\n";
     

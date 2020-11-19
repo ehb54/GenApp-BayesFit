@@ -16,7 +16,7 @@
             ,"type"      : "label"
             ,"colspan"   : 3
             ,"default"   : "header3"
-            ,"label"     : "BayesFit [<a target=_blank href=https://journals.iucr.org/j/issues/2018/04/00/vg5086>1,</a><a target=_blank href=https://scripts.iucr.org/cgi-bin/paper?pe0063>2,</a><a target=_blank href=https://github.com/Niels-Bohr-Institute-XNS-StructBiophys/BayesFit>Source code</a>]"
+            ,"label"     : "BayesFit [<a target=_blank href=https://journals.iucr.org/j/issues/2018/04/00/vg5086>1,</a><a target=_blank href=https://scripts.iucr.org/cgi-bin/paper?pe0063>2,</a><a target=_blank href=https://github.com/Niels-Bohr-Institute-XNS-StructBiophys/BayesFit>Source code and example data</a>]"
             ,"prehline"  : "true"
             ,"posthline" : "true"
         }
@@ -63,10 +63,10 @@
             ,"id"         : "maxite"
             ,"label"      : "Maximum iterations in minimization at each alpha step"
             ,"type"       : "integer"
-            ,"min"        : 5
+            ,"min"        : 2
             ,"default"    : 7
-            ,"max"        : 1000
-            ,"help"       : "<p>Optionally Input the maximum number of iterations in the minimization routing: more points improve convergence, but also cpu-time. Usually the algoritm converges before this number is reached.</p><p>Default: 500, Minimum: 5 (for testing only), Maximum: 1000</p>"
+            ,"max"        : 100
+            ,"help"       : "<p>Maximum number of iterations in the minimization routing at each alpha: more points improve convergence, but also cpu-time. <p>a last refinement step is done for the best alpha, with 100 iterations (or until convergence)</p></p><p>Default: 7, Minimum: 2 (for testing only), Maximum: 100 (slow)</p>"
         }
         ,{
             "role"       : "input"
@@ -82,13 +82,14 @@
 	,{"role": "input","id": "coreshell_mean_0", "label": " ","type": "text",    "default": "Prior mean:","size": 11,"readonly": "true","repeat": "model:coreshell","norow": "true","help": "Mean of Gaussian prior, also the initial value for the fit"}
 	,{"role": "input","id": "coreshell_sigma_0","label": " ","type": "text",    "default": "Prior width:","size": 11,"readonly": "true","repeat": "model:coreshell","norow": "true","help": "Width (sigma) of Gaussian prior."}
 	,{"role": "input","id": "coreshell_fit_0",  "label": " ","type": "text",    "default": "Fit?:","size": 3, "readonly": "true","repeat": "model:coreshell","norow": "true","help": "If not checked, parameter is fixed at the prior value."}
-	,{"role": "input","id": "coreshell_pos_0",  "label": " ","type": "text",    "default": "Positive constraint?:","size": 17,"readonly": "true","repeat": "model:coreshell","help" : "<p>Apply positive constraint on the parameter, e.g on radii or I(0).</p>"}
+	,{"role": "input","id": "coreshell_pos_0",  "label": " ","type": "text",    "default": "Positive constraint?:","size": 17,"readonly": "true","repeat": "model:coreshell","help" : "<p>Apply positive constraint on the parameter.</p>"}
 ##parameters
         ,{"role": "input","id": "coreshell_name_1", "label": " ","type": "text",    "default": "I(0) [1/A]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
      	,{"role": "input","id": "coreshell_mean_1", "label": " ","type": "text",    "default": "0.88",                 "size": 11,"repeat": "model:coreshell","norow": "true"}
 	,{"role": "input","id": "coreshell_sigma_1","label": " ", "type": "text",   "default": "0.8","size": 11,"repeat": "model:coreshell","norow": "true"}
 	,{"role": "input","id": "coreshell_fit_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell","norow": "true"}
 	,{"role": "input","id": "coreshell_pos_1",  "label": " ","type": "checkbox","checked": "true","repeat": "model:coreshell"}
+#	,{"role": "output","id": "coreshell_ref_1",  "label": " ","type": "text",   "repeat": "model:coreshell"}
 	,{"role": "input","id": "coreshell_name_2", "label": " ","type": "text",    "default": "Background [1/A]","size": 25,"readonly": "true","repeat": "model:coreshell","norow": "true"}
         ,{"role": "input","id": "coreshell_mean_2", "label": " ","type": "text",    "default": "4.5e-3","size": 11,"repeat": "model:coreshell","norow": "true"}
         ,{"role": "input","id": "coreshell_sigma_2","label": " ","type": "text",    "default": "1e-1","size": 11,"repeat": "model:coreshell","norow": "true"}
@@ -282,40 +283,24 @@
         }
         ,{
             "role"       : "output"
-            ,"id"         : "hroutput2"
-            ,"label"      : "<hr>"
+            ,"id"         : "label_gof"
+            ,"label"      : "<hr> Goodness of fit<hr>"
             ,"type"       : "label"
             ,"colspan"    : 2
         }
-        ,{
-            "role"       : "output"
-            ,"id"         : "chi2"
-            ,"label"      : "Chi^2"
-            ,"type"       : "text"
-        }
-        ,{
+	,{
             "role"       : "output"
             ,"id"         : "chi2r"
-            ,"label"      : "Chi^2_r"
+            ,"label"      : "Reduced Chi2 (Chi2r)"
             ,"type"       : "text"
+	    ,"help"       : "Reduced chi-square, Chi2r = Chi2/(M-Ng), wher M is the number of datapoitns and Ng is the number of good parameters"
         }
-        ,{
+	,{
             "role"       : "output"
-            ,"id"         : "alpha"
-            ,"label"      : "alpha"
-            ,"type"       : "text"
-        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "S"
-            ,"label"      : "value of constraint, S"
-            ,"type"       : "text"
-        }
-        ,{
-            "role"       : "output"
-            ,"id"         : "aS"
-            ,"label"      : "value of constraint times alpha, alpha*S"
-            ,"type"       : "text"
+            ,"id"         : "label_info"
+            ,"label"      : "<hr> Information content of data given the model and prior<hr>"
+            ,"type"       : "label"
+            ,"colspan"    : 2
         }
         ,{
             "role"       : "output"
@@ -324,33 +309,67 @@
             ,"type"       : "text"
             ,"help"       : "Number of good parameters"
         }
+        ,{
+            "role"       : "output"
+            ,"id"         : "label_alpha"
+            ,"label"      : "<hr> Weighting data and prior via alpha. Minimizing function (Chi2 + alpha*S), and use evidence to refine alpha.<hr>"
+            ,"type"       : "label"
+            ,"colspan"    : 2
+#	    ,"help"       : "Minimizing function (Chi2 + alpha*S) at each alpha to refine parameters, and use evidence to find best alpha."
+        }
+        ,{
+            "role"       : "output"
+            ,"id"         : "chi2"
+            ,"label"      : "Chi2 (not reduced)"
+            ,"type"       : "text"
+	    ,"help"       : "The Chi2, not reduced, used in minimization"
+        }
+        ,{
+            "role"       : "output"
+            ,"id"         : "alpha"
+            ,"label"      : "alpha"
+            ,"type"       : "text"
+	    ,"help"       : "<p>Lagrange multiplier, weighting data and prior by minimizing</p><p>(Chi2 + aS), where S is the prior.</p> <p>See Hansen 2000 [1], Larsen, Arleth and Hansen 2018 [2]</p>"
+        }
+        ,{
+            "role"       : "output"
+            ,"id"         : "S"
+            ,"label"      : "value of constraint, S"
+            ,"type"       : "text"
+	    ,"help"       : "Prior. See Larsen, Arleth and Hansen 2018 [2]"
+        }
 #        ,{
 #            "role"       : "output"
-#            ,"id"         : "Ns"
-#            ,"label"      : "Ns (Number of Shannon channels)"
+#            ,"id"         : "aS"
+#            ,"label"      : "value of constraint times alpha, alpha*S"
 #            ,"type"       : "text"
-#	    ,"help"       : "Number of Shannon channels"
 #        }
         ,{
             "role"       : "output"
             ,"id"         : "evidence"
             ,"label"      : "Evidence at maximum"
             ,"type"       : "text"
+	    ,"help"       : "evidence for given alpha, used to find the best alpha"
         }
 #	,{
-#	    "role"       : "input"
-#	    ,"id"        : "module_header"
-#	    ,"label"     : "Plot Exercise"
-#	    ,"type"      : "label"
-#	    ,"default"   : "header4"
-#	    ,"prehline"  : "true"
-#	    ,"posthline" : "true"
+#	    "role"       : "output"
+#	    ,"id"        : "plotline"
+#	    ,"type"      : "plotly"
+#	    ,"label"     : "Fit"
 #	}
 	,{
-	    "role"       : "output"
-	    ,"id"        : "plotline"
-	    ,"type"      : "plotly"
-	    ,"label"     : "Fit"
-	}
+            "role"       : "output"
+            ,"id"         : "plotfit"
+            ,"label"      : "Fit"
+            ,"type"       : "image"
+            ,"width"      : "50%"
+        }
+	,{
+            "role"       : "output"
+            ,"id"         : "plotfit_linlog"
+            ,"label"      : "Fit"
+            ,"type"       : "image"
+            ,"width"      : "50%"
+        }
     ]
 }
