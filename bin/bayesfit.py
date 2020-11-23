@@ -75,7 +75,7 @@ if __name__=='__main__':
     d = genapp(json_variables)
 
     ## run bayesfit
-    d.udpmessage({"_textarea":"run bayesapp\n"})
+    d.udpmessage({"_textarea":"run bayesfit\n"})
 
     def execute(command,f):
         popen = subprocess.Popen(command, stdout=subprocess.PIPE,bufsize=1)
@@ -90,7 +90,7 @@ if __name__=='__main__':
                 f.write(out_line)
     
     f = open('stdout.d','w')
-    execute(['/opt/genapp/bayesfit/bin/BayesFit/bayesfit','input.d'],f)
+    execute([os.path.dirname(os.path.realpath(__file__)) + '/BayesFit/bayesfit','input.d'],f)
     f.close()
 
     ## retrive output from parameter file
